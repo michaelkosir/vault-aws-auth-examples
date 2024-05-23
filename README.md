@@ -3,7 +3,7 @@
 ## Overview
 This repository contains various examples of AWS workloads leveraging HashiCorp Vault via the AWS Auth method.
 
-- Lamda (Vault AWS Lambda Extension)
+- Lambda (Vault AWS Lambda Extension)
 - Lambda (SDK/Library)
 - EC2
 
