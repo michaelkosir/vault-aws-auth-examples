@@ -4,7 +4,7 @@ write_files:
   - path: /etc/vault.d/secret.ctmpl
     content: |
       This will appear above the rendered secrets.
-      {{- with secret "kv/demo" -}}
+      {{- with secret "kv/demo/engineering/app02" -}}
       username={{ .Data.data.username }}
       password={{ .Data.data.password }}
       {{- end -}}
