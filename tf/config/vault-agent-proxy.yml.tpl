@@ -4,10 +4,10 @@ write_files:
   - path: /etc/vault.d/secret.ctmpl
     content: |
       This will appear above the rendered secrets.
-      {{- with secret "kv/demo/engineering/app02" -}}
+      {{- with secret "kv/demo/engineering/app02" }}
       username={{ .Data.data.username }}
       password={{ .Data.data.password }}
-      {{- end -}}
+      {{ end -}}
       This will appear below the rendered secrets.
 
   - path: /etc/vault.d/agent.hcl
@@ -29,7 +29,10 @@ write_files:
         source = "/etc/vault.d/secret.ctmpl"
         destination = "/run/vault/secret"
         perms = "640"
-        group = "www-data"
+
+        ## can specify `user:group` of rendered secret
+        ## if so, make sure `vault:vault` has `write`, `chown`, `chmod` permissions on the rendered secret
+        # group = "www-data"
       }
 
   - path: /etc/vault.d/proxy.hcl
