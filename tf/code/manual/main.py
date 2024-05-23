@@ -1,13 +1,16 @@
+from os import getenv
 import hvac
-import os
 
 
 def handler(event, context):
     client = hvac.Client()
 
     client.auth.aws.iam_login(
-        role=os.environ['VAULT_AUTH_ROLE'],
-        mount_point=os.environ['VAULT_AUTH_PROVIDER']
+        access_key=getenv("AWS_ACCESS_KEY_ID"),
+        secret_key=getenv("AWS_SECRET_ACCESS_KEY"),
+        session_token=getenv("AWS_SESSION_TOKEN"),
+        role=getenv("VAULT_AUTH_ROLE"),
+        mount_point=getenv("VAULT_AUTH_PROVIDER")
     )
 
     secrets = client.secrets.kv.v2.read_secret_version(
