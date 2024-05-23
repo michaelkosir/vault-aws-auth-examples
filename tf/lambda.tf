@@ -50,8 +50,9 @@ resource "aws_lambda_function" "manual" {
 
   environment {
     variables = {
-      VAULT_ADDR      = "http://${aws_instance.vault.public_ip}:8200",
-      VAULT_AUTH_ROLE = "demo-lambda",
+      VAULT_ADDR          = "http://${aws_instance.vault.public_ip}:8200",
+      VAULT_AUTH_ROLE     = "demo-lambda",
+      VAULT_AUTH_PROVIDER = "aws",
     }
   }
 }

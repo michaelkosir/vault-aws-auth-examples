@@ -3,13 +3,11 @@ import os
 
 
 def handler(event, context):
-    role = os.environ['VAULT_AUTH_ROLE']
-
     client = hvac.Client()
 
     client.auth.aws.iam_login(
-        role=role,
-        mount_point='aws'
+        role=os.environ['VAULT_AUTH_ROLE'],
+        mount_point=os.environ['VAULT_AUTH_PROVIDER']
     )
 
     secrets = client.secrets.kv.v2.read_secret_version(
