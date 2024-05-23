@@ -93,14 +93,13 @@ aws lambda invoke --function-name demo-lambda-extension /dev/stdout | jq
 aws ssm start-session --target $(terraform output -raw demo_ec2_id)
 sudo cloud-init status --wait
 
-sudo systemctl start vault-agent
-sudo journalctl -u vault-agent
+sudo systemctl start vault-agent && sudo journalctl -u vault-agent
 sudo ls -al /run/vault
 sudo cat /run/vault/secret
 
-sudo systemctl start vault-proxy
-sudo journalctl -u vault-proxy
-VAULT_ADDR=http://localhost:8100 vault write transit/encrypt/app02 plaintext=$(echo "secret message" | base64 -w0)
+sudo systemctl start vault-proxy && sudo journalctl -u vault-proxy
+export VAULT_ADDR=http://localhost:8100
+vault write transit/encrypt/app02 plaintext=$(echo "secret message" | base64 -w0)
 
 exit
 ```
