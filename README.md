@@ -39,6 +39,10 @@ vault kv put kv/demo/engineering/app02 \
   username=$(uuidgen) \
   password=$(base64 < /dev/urandom | head -c 64)
 
+vault secrets enable transit
+
+vault write transit/keys/app02 type=rsa-4096
+
 vault auth enable aws
 
 vault write -f auth/aws/config/client
@@ -52,6 +56,9 @@ EOF
 vault policy write app02 - <<EOF
 path "kv/data/demo/engineering/app02" {
   capabilities = ["read"]
+}
+path "transit/encrypt/app02" {
+  capabilities = ["update"]
 }
 EOF
 
@@ -75,17 +82,25 @@ vault write auth/aws/role/demo-ec2 \
 ### AWS Lambda
 ```shell
 # manual
-aws lambda invoke --function-name demo-lambda-manual /dev/stdout --region us-east-2 | jq
+aws lambda invoke --function-name demo-lambda-manual /dev/stdout | jq
 
 # extension
-aws lambda invoke --function-name demo-lambda-extension /dev/stdout --region us-east-2 | jq
+aws lambda invoke --function-name demo-lambda-extension /dev/stdout | jq
 ```
 
 ### AWS EC2
 ```shell
 aws ssm start-session --target $(terraform output -raw demo_ec2_id)
-sudo systemctl start vault-agent vault-proxy
+sudo cloud-init status --wait
+
+sudo systemctl start vault-agent
+sudo journalctl -u vault-agent
 sudo ls -al /run/vault
 sudo cat /run/vault/secret
+
+sudo systemctl start vault-proxy
+sudo journalctl -u vault-proxy
+VAULT_ADDR=http://localhost:8100 vault write transit/encrypt/app02 plaintext=$(echo "secret message" | base64 -w0)
+
 exit
 ```
