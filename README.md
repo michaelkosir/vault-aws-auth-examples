@@ -9,7 +9,7 @@ This repository contains various examples of AWS workloads leveraging HashiCorp 
 
 ## Multi Account
 <p align="center">
-  <img src="./img/aws-auth.png">
+  <img src="./img/aws-auth.drawio.svg">
 </p>
 
 ## Usage
