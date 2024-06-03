@@ -7,6 +7,9 @@ This repository contains various examples of AWS workloads leveraging HashiCorp 
 - Lambda (SDK/Library)
 - EC2
 
+## Multi Account
+<img src="./img/aws-auth.png">
+
 ## Usage
 
 ### Infrastructure Setup
