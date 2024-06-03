@@ -39,7 +39,8 @@ vault secrets enable -version=2 kv
 
 vault kv put kv/demo/engineering/app01 \
   hello=world \
-  foo=bar uuid=$(uuidgen) \
+  foo=bar \
+  uuid=$(uuidgen) \
   random=$RANDOM
 
 vault kv put kv/demo/engineering/app02 \
