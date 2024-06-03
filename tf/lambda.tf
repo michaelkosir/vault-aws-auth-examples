@@ -25,6 +25,16 @@ resource "null_resource" "manual" {
   }
 }
 
+resource "null_resource" "extension" {
+  triggers = {
+    requirements = sha256(file("./code/extension/requirements.txt"))
+  }
+
+  provisioner "local-exec" {
+    command = "python3 -m pip install -r ./code/extension/requirements.txt -t ./code/extension"
+  }
+}
+
 data "archive_file" "manual" {
   depends_on = [null_resource.manual]
 
@@ -34,6 +44,8 @@ data "archive_file" "manual" {
 }
 
 data "archive_file" "extension" {
+  depends_on = [null_resource.extension]
+
   type        = "zip"
   source_dir  = "./code/extension"
   output_path = "./code/archives/extension.zip"
@@ -75,8 +87,7 @@ resource "aws_lambda_function" "extension" {
       VAULT_ADDR          = "http://${aws_instance.vault.public_ip}:8200",
       VAULT_AUTH_ROLE     = "demo-lambda",
       VAULT_AUTH_PROVIDER = "aws",
-      VAULT_SECRET_PATH   = "kv/data/demo/engineering/app01",
-      VAULT_SECRET_FILE   = "/tmp/vault/secret.json",
+      VAULT_SECRET_PATH   = "kv/data/demo/engineering/app01"
     }
   }
 }

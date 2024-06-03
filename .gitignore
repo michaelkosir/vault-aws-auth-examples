@@ -1,6 +1,7 @@
 **/*.env
 **/*.zip
 tf/code/manual/*/*
+tf/code/extension/*/*
 
 # Local .terraform directories
 **/.terraform/*
