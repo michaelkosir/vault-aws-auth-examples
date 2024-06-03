@@ -8,7 +8,8 @@ This repository contains various examples of AWS workloads leveraging HashiCorp 
 - EC2
 
 ## Multi Account
-[How to Set up AWS Auth Method Cross Account Access with Vault](https://support.hashicorp.com/hc/en-us/articles/19951252634387-How-to-Set-up-AWS-Auth-Method-Cross-Account-Access-with-Vault)
+To allow Vault to authenticate IAM principals and EC2 instances in other accounts, Vault supports using AWS STS (Security Token Service) to assume AWS IAM Roles in other accounts. For each target AWS account ID, you configure the IAM Role for Vault to assume using the auth/aws/config/sts/<account_id> and Vault will use credentials from assuming that role to validate IAM principals and EC2 instances in the target account.
+
 <p align="center">
   <img src="./img/aws-auth.drawio.svg">
 </p>
