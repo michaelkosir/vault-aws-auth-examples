@@ -8,8 +8,7 @@ This repository contains various examples of AWS workloads leveraging HashiCorp 
 - EC2
 
 ## Multi Account
-(How to Set up AWS Auth Method Cross Account Access with Vault)[https://support.hashicorp.com/hc/en-us/articles/19951252634387-How-to-Set-up-AWS-Auth-Method-Cross-Account-Access-with-Vault]
-
+[How to Set up AWS Auth Method Cross Account Access with Vault](https://support.hashicorp.com/hc/en-us/articles/19951252634387-How-to-Set-up-AWS-Auth-Method-Cross-Account-Access-with-Vault)
 <p align="center">
   <img src="./img/aws-auth.drawio.svg">
 </p>
