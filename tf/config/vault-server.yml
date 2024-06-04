@@ -1,46 +1,11 @@
 #cloud-config
 
-write_files:
-  - path: /etc/vault.d/vault.hcl
-    content: |
-      api_addr     = "http://{{ GetPrivateIP }}:8200"
-      cluster_addr = "http://{{ GetPrivateIP }}:8201"
-
-      ui = true
-
-      # enterprise
-      # license_path = "/etc/vault.d/vault.hclic"
-
-      listener "tcp" {
-        address = "0.0.0.0:8200"
-        tls_disable = "true"
-      }
-
-      # community
-      storage "file" {
-        path = "/opt/vault/data"
-      }
-
-      # enterprise
-      # storage "raft" {
-      #   path = "/opt/vault/data"
-      # }
-
-  - path: /home/ssm-user/vault.env
-    content: |
-      export VAULT_ADDR="http://localhost:8200"
-      export VAULT_UNSEAL=$(jq -r .unseal_keys_hex[0] /home/ssm-user/init.json)
-      export VAULT_TOKEN=$(jq -r .root_token /home/ssm-user/init.json)
-
 runcmd:
   - yum install -y yum-utils
   - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-  # - yum -y install vault-enterprise # enterprise
-  - yum -y install vault # community
+  - yum -y install vault
 
-  # - touch /etc/vault.d/vault.hclic # enterprise
-  - chown root:vault /etc/vault.d/*
-  - chmod 0640 /etc/vault.d/*
+  - sed -i 's|^ExecStart.*$|ExecStart=/usr/bin/vault server -dev -dev-root-token-id=root -dev-listen-address=0.0.0.0:8200 -dev-no-store-token|' /lib/systemd/system/vault.service
 
-  # - systemctl enable vault # enterprise
-  - systemctl enable vault --now # community
+  - systemctl daemon-reload
+  - systemctl enable vault --now

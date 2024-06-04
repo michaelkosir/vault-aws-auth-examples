@@ -23,18 +23,18 @@ cd ./vault-aws-auth-examples/tf
 terraform apply
 ```
 
-### Vault Setup
-```shell
-aws ssm start-session --target $(terraform output -raw demo_vault_id)
-export VAULT_ADDR="http://localhost:8200"
-vault operator init -format=json -key-shares=1 -key-threshold=1 | sudo tee /home/ssm-user/init.json
-source /home/ssm-user/vault.env
-vault operator unseal $VAULT_UNSEAL
-exit
-```
 
 ### AWS Auth Setup
 ```shell
+export VAULT_ADDR="http://$(terraform output -raw demo_vault_public_ip):8200"
+export VAULT_TOKEN="root"
+
+vault status
+
+vault auth list
+
+vault secrets list
+
 vault secrets enable -version=2 kv
 
 vault kv put kv/demo/engineering/app01 \
