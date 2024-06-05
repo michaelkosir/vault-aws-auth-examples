@@ -73,7 +73,7 @@ EOF
 # Lambda max timeout is 900 seconds (15 minutes).
 vault write auth/aws/role/demo-lambda \
   auth_type="iam" \
-  bound_iam_principal_arn="arn:aws:iam::$AWS_ACCOUNT_ID:role/demo-lambda" \
+  bound_iam_principal_arn="arn:aws:iam::$AWS_ACCOUNT_ID:role/demo-lambda-aws-auth" \
   token_ttl="1000s" \
   token_max_ttl="1000s" \
   token_policies="app01"
@@ -81,7 +81,7 @@ vault write auth/aws/role/demo-lambda \
 # ec2, renew daily, reauth monthly
 vault write auth/aws/role/demo-ec2 \
   auth_type="iam" \
-  bound_iam_principal_arn="arn:aws:iam::$AWS_ACCOUNT_ID:role/demo-ec2" \
+  bound_iam_principal_arn="arn:aws:iam::$AWS_ACCOUNT_ID:role/demo-ec2-aws-auth" \
   token_ttl="24h" \
   token_max_ttl="30d" \
   token_policies="app02"
@@ -90,10 +90,10 @@ vault write auth/aws/role/demo-ec2 \
 ### AWS Lambda
 ```shell
 # manual
-aws lambda invoke --function-name demo-lambda-manual /dev/stdout | jq
+aws lambda invoke --function-name demo-lambda-manual-aws-auth /dev/stdout | jq
 
 # extension
-aws lambda invoke --function-name demo-lambda-extension /dev/stdout | jq
+aws lambda invoke --function-name demo-lambda-extension-aws-auth /dev/stdout | jq
 ```
 
 ### AWS EC2
