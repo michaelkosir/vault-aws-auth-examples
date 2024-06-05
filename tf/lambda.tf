@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda" {
-  name = "demo-lambda"
+  name = "demo-lambda-${var.name}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -52,7 +52,7 @@ data "archive_file" "extension" {
 }
 
 resource "aws_lambda_function" "manual" {
-  function_name    = "demo-lambda-manual"
+  function_name    = "demo-lambda-manual-${var.name}"
   description      = "Demo app connecting to Vault from Lambda"
   role             = aws_iam_role.lambda.arn
   filename         = data.archive_file.manual.output_path
@@ -70,7 +70,7 @@ resource "aws_lambda_function" "manual" {
 }
 
 resource "aws_lambda_function" "extension" {
-  function_name    = "demo-lambda-extension"
+  function_name    = "demo-lambda-extension-${var.name}"
   description      = "Demo app using Vault AWS Lambda extension"
   role             = aws_iam_role.lambda.arn
   filename         = data.archive_file.extension.output_path
