@@ -26,8 +26,8 @@ terraform apply
 
 ### AWS Auth Setup
 ```shell
-export VAULT_ADDR="http://$(terraform output -raw demo_vault_public_ip):8200"
-export VAULT_TOKEN="root"
+export VAULT_ADDR=$(terraform output -raw vault_addr)
+export VAULT_TOKEN=$(terraform output -raw vault_token)
 
 vault status
 

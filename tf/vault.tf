@@ -1,3 +1,5 @@
+resource "random_uuid" "this" {}
+
 resource "aws_security_group" "vault" {
   name = "demo-vault-${var.name}"
 
@@ -102,7 +104,7 @@ resource "aws_instance" "vault" {
       - yum install -y yum-utils
       - yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
       - yum -y install vault
-      - sed -i 's|^ExecStart.*$|ExecStart=/usr/bin/vault server -dev -dev-root-token-id=root -dev-listen-address=0.0.0.0:8200 -dev-no-store-token|' /lib/systemd/system/vault.service
+      - sed -i 's|^ExecStart.*$|ExecStart=/usr/bin/vault server -dev -dev-root-token-id=${random_uuid.this.result} -dev-listen-address=0.0.0.0:8200 -dev-no-store-token|' /lib/systemd/system/vault.service
       - systemctl daemon-reload
       - systemctl enable vault --now
   EOT
